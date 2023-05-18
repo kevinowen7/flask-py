@@ -24,13 +24,15 @@ firebase_admin.initialize_app(cred, {
 })
 bucket = storage.bucket()
 
-
-def remove_non_ascii(a_str):
-    ascii_chars = set(string.printable)
-
-    return ''.join(
-        filter(lambda x: x in ascii_chars, a_str)
-    )
+def valid_xml_char_ordinal(c):
+    codepoint = ord(c)
+    # conditions ordered by presumed frequency
+    return (
+        0x20 <= codepoint <= 0xD7FF or
+        codepoint in (0x9, 0xA, 0xD) or
+        0xE000 <= codepoint <= 0xFFFD or
+        0x10000 <= codepoint <= 0x10FFFF
+        )
 
 @app.route('/')
 def hello_world():
@@ -67,7 +69,7 @@ def convert_image():
 
     # Add a paragraph to the document
     p = doc.add_paragraph()
-    p.add_run(remove_non_ascii(text_parsed))
+    p.add_run(''.join(c for c in text_parsed if valid_xml_char_ordinal(c)))
 
     # save document
     filename = datetime.now().strftime('%Y%m%d%H%M%S')+".docx"
