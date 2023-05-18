@@ -13,10 +13,6 @@ from firebase_admin import storage
 
 import io
 
-import sys
-if sys.version_info[0] >= 3:
-    unicode = str
-
 app = Flask(__name__)
 
 #pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
@@ -56,7 +52,7 @@ def convert_image():
     
     # OCR
     text_parsed = pytesseract.image_to_string(Image.open(image))
-    text_parsed = unicode(text_parsed, "utf-8")
+    text_parsed = text_parsed.encode('cp1252').decode('utf8')
     
     # Create a document
     doc = docx.Document()
