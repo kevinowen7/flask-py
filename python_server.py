@@ -52,7 +52,8 @@ def convert_image():
     
     # OCR
     text_parsed = pytesseract.image_to_string(Image.open(image))
-    print(text_parsed)
+    text_parsed = unicode(text_parsed, "utf-8")
+    
     # Create a document
     doc = docx.Document()
 
