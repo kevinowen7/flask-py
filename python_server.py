@@ -13,6 +13,10 @@ from firebase_admin import storage
 
 import io
 
+import sys
+if sys.version_info[0] >= 3:
+    unicode = str
+
 app = Flask(__name__)
 
 #pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
