@@ -6,6 +6,7 @@ from io import BytesIO
 from datetime import datetime
 from PIL import Image
 import pytesseract
+import string
 
 import firebase_admin
 from firebase_admin import credentials
