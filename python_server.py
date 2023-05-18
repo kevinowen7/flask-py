@@ -23,6 +23,14 @@ firebase_admin.initialize_app(cred, {
 })
 bucket = storage.bucket()
 
+
+def remove_non_ascii(a_str):
+    ascii_chars = set(string.printable)
+
+    return ''.join(
+        filter(lambda x: x in ascii_chars, a_str)
+    )
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
@@ -52,14 +60,13 @@ def convert_image():
     
     # OCR
     text_parsed = pytesseract.image_to_string(Image.open(image))
-    text_parsed = text_parsed.encode('utf-8', 'ignore')
     
     # Create a document
     doc = docx.Document()
 
     # Add a paragraph to the document
     p = doc.add_paragraph()
-    p.add_run(text_parsed)
+    p.add_run(remove_non_ascii(text_parsed))
 
     # save document
     filename = datetime.now().strftime('%Y%m%d%H%M%S')+".docx"
