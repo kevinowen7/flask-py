@@ -15,7 +15,7 @@ import io
 
 app = Flask(__name__)
 
-pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
+#pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe'
 
 cred = credentials.Certificate('serviceAccountKey.json')
 firebase_admin.initialize_app(cred, {
@@ -82,4 +82,4 @@ def convert_image():
     )
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080)
+    app.run(host='0.0.0.0', port=8080)
