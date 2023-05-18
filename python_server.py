@@ -42,14 +42,13 @@ def convert_image():
     filename_original = datetime.now().strftime('%Y%m%d%H%M%S')+".jpg"
 
     f = io.BytesIO()
-    pil_img = Image.open(image)
+    pil_img = Image.open(image.stream)
     pil_img.save(f, format='JPEG')
-    pil_img.close()
     
     blob_original = bucket.blob("origin/"+filename_original)
-    blob_original.upload_from_string(f.getvalue())
+    blob_original.upload_from_string(f.getvalue(), content_type="image/jpeg")
     blob_original.make_public()
-    
+    print(blob_original.public_url)
     # OCR
     text_parsed = pytesseract.image_to_string(Image.open(image))
 
