@@ -91,15 +91,15 @@ def convert_image():
     os.unlink(filename)
 
     # upload to firebase
-    blob = bucket.blob("preview/"+extractedPageName)
-    blob.upload_from_filename(extractedPageName)
-    blob.make_public()
+    blob_preview = bucket.blob("preview/"+extractedPageName)
+    blob_preview.upload_from_filename(extractedPageName)
+    blob_preview.make_public()
     os.unlink(extractedPageName)
 
     resultData = {}
     resultData["result_file"] = blob.public_url
     resultData["original_file"] = blob_original.public_url
-    resultData["preview_file"] = extractedPageName
+    resultData["preview_file"] = blob_preview.public_url
     
     # END
     return jsonify(
