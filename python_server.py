@@ -6,7 +6,7 @@ from io import BytesIO
 from datetime import datetime
 from PIL import Image
 import pytesseract
-import string
+import aspose.words as aw
 
 import firebase_admin
 from firebase_admin import credentials
@@ -75,6 +75,15 @@ def convert_image():
     filename = datetime.now().strftime('%Y%m%d%H%M%S')+".docx"
     doc.save(filename)
     
+    streamFile = io.FileIO(filename)
+    awDocFile = aw.Document(streamFile)
+    streamFile.close()
+
+    extractedPageName = datetime.now().strftime('%Y%m%d%H%M%S')+".jpg"
+    for page in range(0, awDocFile.page_count):
+        extractedPage = awDocFile.extract_pages(page, 1)
+        extractedPage.save(extractedPageName)
+
     # upload to firebase
     blob = bucket.blob("result/"+filename)
     blob.upload_from_filename(filename)
@@ -84,6 +93,7 @@ def convert_image():
     resultData = {}
     resultData["result_file"] = blob.public_url
     resultData["original_file"] = blob_original.public_url
+    resultData["preview_file"] = extractedPageName
     
     # END
     return jsonify(
