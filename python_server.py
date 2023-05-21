@@ -90,6 +90,12 @@ def convert_image():
     blob.make_public()
     os.unlink(filename)
 
+    # upload to firebase
+    blob = bucket.blob("preview/"+extractedPageName)
+    blob.upload_from_filename(extractedPageName)
+    blob.make_public()
+    os.unlink(extractedPageName)
+
     resultData = {}
     resultData["result_file"] = blob.public_url
     resultData["original_file"] = blob_original.public_url
