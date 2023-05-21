@@ -82,6 +82,7 @@ def convert_image():
     extractedPageName = datetime.now().strftime('%Y%m%d%H%M%S')+".jpg"
     for page in range(0, awDocFile.page_count):
         extractedPage = awDocFile.extract_pages(page, 1)
+        extractedPage.watermark.remove()
         extractedPage.save(extractedPageName)
 
     # upload to firebase
